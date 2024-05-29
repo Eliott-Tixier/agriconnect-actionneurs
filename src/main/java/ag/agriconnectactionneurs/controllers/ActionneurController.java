@@ -3,9 +3,12 @@ package ag.agriconnectactionneurs.controllers;
 import ag.agriconnectactionneurs.entities.Actionneur;
 import ag.agriconnectactionneurs.exceptions.ActionneurNotFoundException;
 import ag.agriconnectactionneurs.services.ActionneurService;
+import ag.agriconnectactionneurs.websocket.ActionneurWebSocketHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.socket.WebSocketSession;
 
 import java.util.List;
 
@@ -14,11 +17,12 @@ import java.util.List;
 public class ActionneurController {
 
     private ActionneurService actionneurService;
+    private final ActionneurWebSocketHandler webSocketHandler;
 
-    public ActionneurController(ActionneurService actionneurService) {
+    public ActionneurController(ActionneurService actionneurService, ActionneurWebSocketHandler webSocketHandler) {
         this.actionneurService = actionneurService;
+        this.webSocketHandler = webSocketHandler;
     }
-
     @PostMapping
     public Actionneur save(@RequestBody Actionneur actionneur){
         return actionneurService.save(actionneur);
@@ -42,6 +46,19 @@ public class ActionneurController {
     @DeleteMapping("/{id}")
     public void delete(@RequestParam Long id) throws ActionneurNotFoundException {
         actionneurService.deleteActionneur(id);
+    }
+
+    @PostMapping("/trigger/{id}")
+    public ResponseEntity<String> triggerActionneur(@PathVariable Long id, @RequestParam long duration) {
+        try {
+            actionneurService.triggerActionneur(id, duration);
+            webSocketHandler.notifyClient(id, "Actionneur activé pour " + duration + " millisecondes.");
+            return ResponseEntity.ok("Actionneur #" + id + " activé pour " + duration + " millisecondes.");
+        } catch (ActionneurNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erreur lors de l'activation de l'actionneur : " + e.getMessage());
+        }
     }
 
     @ExceptionHandler
