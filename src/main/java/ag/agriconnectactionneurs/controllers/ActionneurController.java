@@ -13,7 +13,7 @@ import org.springframework.web.socket.WebSocketSession;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/actionneur")
+@RequestMapping("/api/actionneurs")
 public class ActionneurController {
 
     private ActionneurService actionneurService;
