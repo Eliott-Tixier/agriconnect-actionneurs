@@ -7,7 +7,7 @@ spring:
     hibernate:
       ddl-auto: create-drop
   datasource:
-    url: jdbc:mysql://localhost:3307/agriconnect-actionneurs?serverTimezone=UTC
+    url: jdbc:mysql://localhost:3307/agriconect-actionneurs?serverTimezone=UTC
     username: root
     password: root
     database-platform: org.hibernate.dialect.MySQLDialect
