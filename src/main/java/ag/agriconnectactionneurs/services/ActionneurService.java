@@ -69,6 +69,11 @@ public class ActionneurService {
         delayDesactivation(id, duration);
     }
 
+    public List<Actionneur> findActionneurByIdUtilisateur(Long id) throws ActionneurNotFoundException {
+        List<Actionneur> actionneurList = actionneurRepository.findActionneurByIdUtilisateur(id);
+        return actionneurList;
+    }
+
     @Async
     protected void delayDesactivation(Long id, long duration) {
         try {

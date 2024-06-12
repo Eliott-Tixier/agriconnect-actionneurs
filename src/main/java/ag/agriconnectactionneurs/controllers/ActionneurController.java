@@ -34,13 +34,18 @@ public class ActionneurController {
     }
 
     @GetMapping("/{id}")
-    public Actionneur getActionneur(@RequestParam Long id) throws ActionneurNotFoundException {
+    public Actionneur getActionneur(@PathVariable Long id) throws ActionneurNotFoundException {
         return actionneurService.getActionneur(id);
     }
 
     @GetMapping
     public List<Actionneur> getAllActionneurs(){
         return actionneurService.getAllActionneurs();
+    }
+
+    @GetMapping("idUtilisateur/{id}")
+    public List<Actionneur> getActionneurByIdUtilisateur(@PathVariable Long id) throws ActionneurNotFoundException {
+        return actionneurService.findActionneurByIdUtilisateur(id);
     }
 
     @DeleteMapping("/{id}")

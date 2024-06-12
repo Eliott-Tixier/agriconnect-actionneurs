@@ -25,4 +25,6 @@ public class Actionneur {
     private double longitude;
 
     private double latitude;
+
+    private Long idUtilisateur;
 }
