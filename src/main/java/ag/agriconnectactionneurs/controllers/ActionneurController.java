@@ -54,7 +54,7 @@ public class ActionneurController {
     }
 
     @PostMapping("/trigger/{id}")
-    public ResponseEntity<String> triggerActionneur(@PathVariable Long id, @RequestParam long duration) {
+    public ResponseEntity<String> triggerActionneur(@PathVariable Long id, @RequestParam Long duration) {
         try {
             actionneurService.triggerActionneur(id, duration);
             webSocketHandler.notifyClient(id, "Actionneur activé pour " + duration + " millisecondes.");
