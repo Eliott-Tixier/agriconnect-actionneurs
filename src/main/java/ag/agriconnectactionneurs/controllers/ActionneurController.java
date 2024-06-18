@@ -49,7 +49,7 @@ public class ActionneurController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@RequestParam Long id) throws ActionneurNotFoundException {
+    public void delete(@PathVariable Long id) throws ActionneurNotFoundException {
         actionneurService.deleteActionneur(id);
     }
 
